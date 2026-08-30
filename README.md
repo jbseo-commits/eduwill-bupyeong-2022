@@ -38,21 +38,60 @@
 
 ## 최초 1회 — GitHub 연결
 
-1. GitHub 웹에서 **빈 저장소**를 만든다. README·라이선스·gitignore **전부 체크 해제**.
-2. 아래를 실행한다(`<계정>`·`<저장소>` 를 바꾼다).
+**저장소 이름: `eduwill-bupyeong-2022`** (2026-08-31 확정)
+최종 주소는 `https://<계정>.github.io/eduwill-bupyeong-2022/` — **45자**다.
+
+> 🔴 **한글 이름을 쓰지 않은 이유** — 저장소 이름은 URL 경로에 그대로 들어간다.
+> `에듀윌-편입-부평학원-2022-해설` 로 하면 퍼센트 인코딩되어 **131자**가 되고, 카톡·문자에서 링크가 깨진다.
+> 학생이 보는 **화면 제목은 여전히 한글**이다(페이지 `<title>` = 「2022학년도 편입영어 기출 해설집」).
+> 저장소 이름은 주소창에만 쓰인다.
+
+### 🔴 요금제부터 정할 것 — Free 면 저장소가 «반드시 Public» 이다
+
+| 요금제 | 저장소 | Pages 사이트 | 판매본 관점 |
+|---|---|---|---|
+| **Free** | **Public만** | 공개 | 🔴 `git clone` 한 번에 해설집 원본이 통째로 복제된다 |
+| **Pro**(약 $4/월) | Private 가능 | **그래도 공개** | 소스 유출은 막힌다. 학생 결제 검증은 여전히 안 된다 |
+
+판매 상품이므로 **Pro 이상을 권한다.** Free 로 가면 사이트 링크 유출과 별개로
+**저장소에서 원본 파일을 직접 내려받을 수 있다.**
+
+### 사전 점검 (한 번만)
+
+```
+git config --global credential.helper manager      # ✅ 2026-08-31 설정 완료
+git config --global user.name  "<이름>"
+git config --global user.email "<GitHub ID>+<username>@users.noreply.github.com"
+```
+
+🔴 **`user.name`·`user.email` 이 미설정이면** git 이 `사용자명@호스트명` 으로 지어낸다.
+지금 이 폴더의 커밋은 `jbseo@eduwill.net` 으로 찍혀 있다 — **Public 저장소에 push 하면 회사 이메일이 공개 커밋 기록에 영구히 남는다.**
+GitHub 의 `users.noreply.github.com` 주소를 쓰면 노출되지 않는다.
+(이미 만든 커밋의 이메일을 바꾸려면 `git commit --amend --reset-author` 로 다시 만들어야 한다. push 전이면 지금이 기회다.)
+
+🔴 **토큰을 URL에 넣지 말 것**(`https://사용자:토큰@github.com/...`). `.git/config` 에 평문으로 남는다.
+credential.helper 를 설정해 뒀으니 push 할 때 **브라우저 로그인 창**이 뜬다.
+
+### 절차
+
+1. GitHub 웹에서 **빈 저장소** `eduwill-bupyeong-2022` 를 만든다.
+   README·라이선스·gitignore **전부 체크 해제** · 공개범위는 위 표를 보고 정한다.
+2. 연결하고 올린다(`<계정>` 을 바꾼다).
 
 ```
 cd /c/Users/jbseo/Desktop/exam-dist-2022
-git remote add origin https://github.com/<계정>/<저장소>.git
+git remote add origin https://github.com/<계정>/eduwill-bupyeong-2022.git
 git push -u origin main
 ```
 
-🔴 **토큰을 URL에 넣지 말 것**(`https://사용자:토큰@github.com/...`). `.git/config` 에 평문으로 남는다.
-Git for Windows에 포함된 **Git Credential Manager** 가 브라우저 로그인 창을 띄우니 그걸 쓴다.
-
 3. 저장소 → **Settings → Pages** → *Source* **Deploy from a branch** → Branch **main** / **`/ (root)`** → Save
 4. 같은 화면에서 **Enforce HTTPS** 를 켠다.
-5. 1~2분 뒤 `https://<계정>.github.io/<저장소>/` 에서 열린다.
+5. 1~2분 뒤 `https://<계정>.github.io/eduwill-bupyeong-2022/` 에서 열린다.
+
+### 용량 한도 (공식)
+
+- 게시 사이트 **1 GB** · 소스 저장소 권장 1 GB — 현재 4.53MB 라 여유롭다
+- 대역폭 **월 100 GB (소프트)** — 4.53MB × 약 22,000회 열람에 해당
 
 ---
 
