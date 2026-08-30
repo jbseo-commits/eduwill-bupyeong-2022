@@ -38,8 +38,16 @@
 
 ## 최초 1회 — GitHub 연결
 
-**저장소 이름: `eduwill-bupyeong-2022`** (2026-08-31 확정)
-최종 주소는 `https://<계정>.github.io/eduwill-bupyeong-2022/` — **45자**다.
+**계정: `jbseo-commits` · 저장소: `eduwill-bupyeong-2022`** (2026-08-31 확정)
+
+```
+https://jbseo-commits.github.io/eduwill-bupyeong-2022/     ← 54자
+```
+
+계정 실측(GitHub API) — `login: jbseo-commits` · `id: 322935897` ·
+`created_at: 2026-08-30T22:28:35Z` · `public_repos: 0`.
+🔴 **어제 만든 계정이라 사실상 Free 플랜이다 → Pages 를 쓰려면 저장소가 Public 이어야 한다.**
+아래 요금제 표를 먼저 볼 것.
 
 > 🔴 **한글 이름을 쓰지 않은 이유** — 저장소 이름은 URL 경로에 그대로 들어간다.
 > `에듀윌-편입-부평학원-2022-해설` 로 하면 퍼센트 인코딩되어 **131자**가 되고, 카톡·문자에서 링크가 깨진다.
@@ -56,18 +64,22 @@
 판매 상품이므로 **Pro 이상을 권한다.** Free 로 가면 사이트 링크 유출과 별개로
 **저장소에서 원본 파일을 직접 내려받을 수 있다.**
 
-### 사전 점검 (한 번만)
+### 사전 점검 — ✅ 2026-08-31 완료
 
 ```
-git config --global credential.helper manager      # ✅ 2026-08-31 설정 완료
-git config --global user.name  "<이름>"
-git config --global user.email "<GitHub ID>+<username>@users.noreply.github.com"
+credential.helper = manager                                       (전역)
+user.name         = jbseo-commits                                 (이 저장소만)
+user.email        = 322935897+jbseo-commits@users.noreply.github.com
 ```
 
-🔴 **`user.name`·`user.email` 이 미설정이면** git 이 `사용자명@호스트명` 으로 지어낸다.
-지금 이 폴더의 커밋은 `jbseo@eduwill.net` 으로 찍혀 있다 — **Public 저장소에 push 하면 회사 이메일이 공개 커밋 기록에 영구히 남는다.**
-GitHub 의 `users.noreply.github.com` 주소를 쓰면 노출되지 않는다.
-(이미 만든 커밋의 이메일을 바꾸려면 `git commit --amend --reset-author` 로 다시 만들어야 한다. push 전이면 지금이 기회다.)
+🔴 **왜 손댔나** — `user.name`·`user.email` 이 미설정이라 git 이 `사용자명@호스트명` 으로 지어냈고,
+커밋 3개가 전부 **`서정빈_편입사업부 <jbseo@eduwill.net>`** 로 찍혀 있었다.
+**Public 저장소에 push 했으면 회사 이메일과 실명·부서가 공개 커밋 기록에 영구히 남는다.**
+push 전에 `git rebase --root -x "git commit --amend --reset-author"` 로 전 커밋을 다시 썼다.
+검증: author·committer 통틀어 `eduwill.net` **0건**.
+
+📌 설정은 **이 저장소에만 로컬로** 걸었다. `exam-qa` 는 내부 저장소라 기존 신원(`서정빈_편입사업부`)을 유지해야
+3트랙 작업로그 대조가 되므로 건드리지 않았다.
 
 🔴 **토큰을 URL에 넣지 말 것**(`https://사용자:토큰@github.com/...`). `.git/config` 에 평문으로 남는다.
 credential.helper 를 설정해 뒀으니 push 할 때 **브라우저 로그인 창**이 뜬다.
@@ -80,13 +92,13 @@ credential.helper 를 설정해 뒀으니 push 할 때 **브라우저 로그인 
 
 ```
 cd /c/Users/jbseo/Desktop/exam-dist-2022
-git remote add origin https://github.com/<계정>/eduwill-bupyeong-2022.git
+git remote add origin https://github.com/jbseo-commits/eduwill-bupyeong-2022.git
 git push -u origin main
 ```
 
 3. 저장소 → **Settings → Pages** → *Source* **Deploy from a branch** → Branch **main** / **`/ (root)`** → Save
 4. 같은 화면에서 **Enforce HTTPS** 를 켠다.
-5. 1~2분 뒤 `https://<계정>.github.io/eduwill-bupyeong-2022/` 에서 열린다.
+5. 1~2분 뒤 `https://jbseo-commits.github.io/eduwill-bupyeong-2022/` 에서 열린다.
 
 ### 용량 한도 (공식)
 
