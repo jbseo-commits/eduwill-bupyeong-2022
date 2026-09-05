@@ -45,11 +45,24 @@ print("  %s bytes · sha256 %s · 동일 %s" % (format(os.path.getsize(b), ","),
 sys.exit(0 if ha == hb else 1)
 PY
 [ $? -ne 0 ] && echo "  🔴 복사본이 원본과 다르다." && exit 1
+echo
+echo "== 3. 지시문 표시 패치 · 오염 현황 =="
+# 🔴 «복사 뒤»에 와야 한다 — 2단계가 원본으로 덮어써 이 패치를 지우기 때문이다.
+#    원본(exam-qa)의 지시문 추출기가 지시문 뒤 텍스트를 못 끊어, 앞 지문 꼬리와 남의 선지가
+#    i(지시문) 필드에 딸려 들어온 문항이 있다(2022: 51문항·15군데·9개 시험지, 2026-09-05 확인).
+#    ⛔ 데이터를 «지우지 않는다» — 15군데 중 7군데는 그 텍스트가 문서에서 «여기에만» 있다(실측).
+#       그래서 화면에서만 두 블록으로 가른다. 내용 손실 0을 실측으로 확인했다.
+#    📌 아래 출력이 «오염 의심 0개»가 되면 원본이 고쳐진 것이다. 그때 이 단계를 지워라.
+perl "$DIST/ins_split.pl" "$DIST/index.html" || {
+  echo "  🔴 지시문 표시 패치에 실패했다."; exit 1; }
+# 조용히 빠지면 지시문이 다시 한 줄로 이어져 나간다 — 파일에 «있는지» 눈으로 확인한다.
+grep -q "function insBlocks(" "$DIST/index.html" || {
+  echo "  🔴 표시 패치가 파일에 들어가지 않았다."; exit 1; }
 
 echo
-echo "== 3. 커밋 · 푸시 =="
+echo "== 4. 커밋 · 푸시 =="
 cd "$DIST" || exit 1
-git add index.html .nojekyll robots.txt README.md 배포.sh
+git add index.html .nojekyll robots.txt README.md ins_split.pl 배포.sh
 if git diff --cached --quiet; then
   echo "  변경 없음 — 커밋 생략."
 else
@@ -62,5 +75,5 @@ else
 fi
 
 echo
-echo "== 4. 배포 후 검증 =="
+echo "== 5. 배포 후 검증 =="
 ( cd "$SRC_REPO" && .venv/Scripts/python.exe scripts/check_deploy_ready.py 2022 --post --skip-slow )
