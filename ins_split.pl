@@ -57,7 +57,19 @@ if (%flag) {
 
 # ── 2. 패치 ────────────────────────────────────────────────────
 if (index($d, 'function insBlocks(') >= 0) {
-  print "  ℹ️  표시 패치는 이미 적용돼 있다.\n";
+  # v1 -> v2 승급 — v1 은 딸려온 텍스트를 «별도 블록으로 보여줬다».
+  # 학생이 돈 내고 보는 화면에 «남의 문제 지문»이 남는다는 지적(2026-09-06)에 따라 아예 안 그린다.
+  # 데이터는 그대로다 — 파일 안에 남아 있고, 위 현황 출력이 계속 개수를 알려 준다.
+  my $v1 = q{"</div>"     + "<div class=" + Q + "ins insx" + Q + ">" + esc(rest) + "</div>";};
+  my $v2 = q{"</div>";};
+  my $c = () = $d =~ /\Q$v1\E/g;
+  if ($c == 1) {
+    $d =~ s/\Q$v1\E/$v2/;
+    open(my $o, ">:raw", $f) or die $!; print $o $d; close $o;
+    print "  ✅ 표시 패치 v1 → v2 승급 (딸려온 텍스트를 화면에 그리지 않는다)\n";
+  } else {
+    print "  ℹ️  표시 패치(v2)는 이미 적용돼 있다.\n";
+  }
   exit 0;
 }
 
@@ -78,8 +90,7 @@ my $FN = encode_utf8(join(qq{},
   'var head=t.slice(0,cut+1), rest=t.slice(cut+1);',
   'while(rest.charAt(0)===" ") rest=rest.slice(1);',
   'if(!rest) return "<div class=" + Q + "ins" + Q + ">" + esc(t) + "</div>";',
-  'return "<div class=" + Q + "ins" + Q + ">" + esc(head) + "</div>"',
-  '     + "<div class=" + Q + "ins insx" + Q + ">" + esc(rest) + "</div>";',
+  q{return "<div class=" + Q + "ins" + Q + ">" + esc(head) + "</div>";},
   '}',
 ));
 
