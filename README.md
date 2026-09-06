@@ -192,6 +192,28 @@ cd /c/Users/jbseo/Desktop/exam-dist-2022
 📌 **이 출력이 「오염 의심 0개」가 되면 원본이 고쳐진 것이다. 그때 3단계를 지워라.**
 패치가 파일에 안 들어가면 배포가 **멈춘다**(`grep -q "function insBlocks("`).
 
+### 🔴 지문이 접힌 채 «여는 버튼»까지 숨었다 (2026-09-06)
+
+세트 문항(지문이 붙은 문항)에서 **왼쪽 지문 칸이 통째로 비어** 보이고, 정답을 눌러야 지문이 나타났다.
+
+```js
+const WIDE = () => matchMedia('(min-width:768px)').matches;   // 렌더 시점에 «한 번»만 본다
+<details class="colp psgd" ${(open||WIDE()) ? ' open' : ''}>
+```
+```css
+@media (min-width:768px){ .card.two .colp summary{display:none} }   /* CSS 는 «실시간» */
+```
+
+`WIDE()` 는 렌더 시점에 굳는데 CSS 는 실시간이라 768px 를 넘나들면 어긋난다.
+🔴 **좁을 때 렌더된 카드를 넓히면** 「지문 보기」 버튼이 CSS 로 사라지고 지문은 접힌 채 남아
+**열 방법이 없어진다.** 실측 — `details` 높이 **9px**, 지문 내용은 있으나 안 보임.
+
+`ins_split.pl` 이 `__psgSync` 를 심어 **넓은 화면이면 지문 details 를 항상 연다**
+(미디어쿼리 변화 · resize · MutationObserver 로 새로 붙는 카드까지). 좁은 화면 동작은 그대로다 —
+「지문 보기」 버튼이 보이고 접힌 상태로 시작한다.
+
+📌 **진짜 수정은 `card()` 의 `open` 판정**이다. `WIDE()` 를 렌더 시점에 굳히지 말고
+CSS 로만 결정하게 하면 이 패치는 필요 없어진다.
 ### 아직 안 고친 것
 
 - **지시문이 문제문(`q`)에 뭉친 문항 2건** — 건국대 자연계A Q18 · 한양대 자연계A Q26.

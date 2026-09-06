@@ -774,4 +774,4 @@ window.addEventListener('resize',setTop);
 if(window.ResizeObserver)new ResizeObserver(setTop).observe(document.querySelector('header'));
 if(!location.hash){const last=store.get('last','');if(last)location.replace(last);}
 route();
-</script></body></html>
+</script><script>/* __psgSync — 지문이 접힌 채 «여는 버튼»까지 숨는 문제 (2026-09-06)   card() 가 WIDE()(768px)를 렌더 시점에 한 번만 보고 details 의 open 을 굳히는데 CSS 는 실시간이다.   좁을 때 렌더된 카드를 넓히면 .card.two .colp summary{display:none} 로 여는 버튼이 사라지고   지문은 접힌 채 남아 열 방법이 없어진다(실측 details 높이 9px).   넓은 화면에서 지문이 늘 보이는 것이 원래 의도이므로 그렇게 맞춰 준다.   진짜 수정은 card() 의 open 판정이다 — exam-qa 가 고쳐지면 이 블록은 아무 일도 하지 않는다. */(function(){var mq = window.matchMedia("(min-width:768px)");function sync(){ if(!mq.matches) return;  var l = document.querySelectorAll("details.colp:not([open])");  for(var i=0;i<l.length;i++) l[i].open = true; }if(mq.addEventListener) mq.addEventListener("change", sync); else if(mq.addListener) mq.addListener(sync);window.addEventListener("resize", sync);if(window.MutationObserver) new MutationObserver(sync).observe(document.documentElement,{childList:true,subtree:true});sync();})();</script></body></html>
