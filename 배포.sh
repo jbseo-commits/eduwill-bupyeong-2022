@@ -46,23 +46,24 @@ sys.exit(0 if ha == hb else 1)
 PY
 [ $? -ne 0 ] && echo "  🔴 복사본이 원본과 다르다." && exit 1
 echo
-echo "== 3. 배포본 표시 패치 · 오염 현황 =="
-# 🔴 «복사 뒤»에 와야 한다 — 2단계가 원본으로 덮어써 이 패치를 지우기 때문이다.
-#    원본(exam-qa)의 지시문 추출기가 지시문 뒤 텍스트를 못 끊어, 앞 지문 꼬리와 남의 선지가
-#    i(지시문) 필드에 딸려 들어온 문항이 있다(2022: 51문항·15군데·9개 시험지, 2026-09-05 확인).
-#    ⛔ 데이터를 «지우지 않는다» — 15군데 중 7군데는 그 텍스트가 문서에서 «여기에만» 있다(실측).
-#       그래서 화면에서만 두 블록으로 가른다. 내용 손실 0을 실측으로 확인했다.
-#    📌 아래 출력이 «오염 의심 0개»가 되면 원본이 고쳐진 것이다. 그때 이 단계를 지워라.
-perl "$DIST/ins_split.pl" "$DIST/index.html" || {
-  echo "  🔴 지시문 표시 패치에 실패했다."; exit 1; }
-# 조용히 빠지면 지시문이 다시 한 줄로 이어져 나간다 — 파일에 «있는지» 눈으로 확인한다.
-grep -q "function insBlocks(" "$DIST/index.html" || {
-  echo "  🔴 표시 패치가 파일에 들어가지 않았다."; exit 1; }
-
+echo "== 3. 배포본 표시 패치 — 은퇴했다 (2026-09-07) =="
+# 🔴 이 자리에 있던 `ins_split.pl` 호출을 «내렸다». 원본(exam-qa)이 고쳐졌기 때문이다.
+#    · A 지시문 오염 — `parsed/2022` 의 instruction 을 군데별로 판정해 걷어냈다(46문항/14군데).
+#      걷어낸 텍스트는 지우지 않고 `instruction_overflow` 에 남겼다.
+#      → qa-work/지시문오염_20260907/fix_instruction_overflow.py
+#    · B 지문 열림 — build_expl_html.py 가 `::details-content` 로 «CSS 에서» 펼치고,
+#      옛 엔진용으로 psgSync(미디어쿼리 change)를 함께 낸다.
+# 🔴 «왜 은퇴시켰나» — A 패치가 규칙(120자 초과 또는 선지기호 2개 이상 → 첫 문장까지)으로 잘라
+#    세종대 [11-15] 의 「[보기] day : sun :: … 」 예시까지 지웠다. 그 5문항은 발문이
+#    `appreciation : kindness ::` 뿐이라 «보기 없는 보기 문제»가 돼 있었다(2026-09-07 라이브 실측).
+#    원본이 깨끗해진 지금, 이 패치에 남은 효과는 그 «오탐 피해»뿐이다.
+# 📌 `ins_split.pl` 파일은 지우지 않았다 — 되돌릴 일이 생기면 이 줄 아래에 호출을 되살리면 된다.
+#    오염이 다시 생기는지는 exam-qa 의 공통 관문 [J] 가 감시한다(tests/test_check_deploy_ready.py 2건).
+echo "  ins_split.pl 호출 없음 — 원본이 고쳐졌다. 감시는 공통 관문 [J] 가 한다."
 echo
 echo "== 4. 커밋 · 푸시 =="
 cd "$DIST" || exit 1
-git add index.html .nojekyll robots.txt README.md ins_split.pl 배포.sh
+git add index.html .nojekyll robots.txt README.md 배포.sh
 if git diff --cached --quiet; then
   echo "  변경 없음 — 커밋 생략."
 else
