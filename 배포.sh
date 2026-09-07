@@ -75,7 +75,7 @@ a, b = sys.argv[1], sys.argv[2]
 ha = hashlib.sha256(open(a, "rb").read()).hexdigest()
 hb = hashlib.sha256(open(b, "rb").read()).hexdigest()
 if ha == hb:
-    print("  ✅ 배포본 == 산출방· sha256 %s" % hb[:16])
+    print("  ✅ 배포본 == 산출물 · sha256 %s" % hb[:16])
     sys.exit(0)
 print("  🔴 배포본이 산출물과 다르다 — 복사 뒤에 누가 고쳤다.")
 print("     산출 %s / 배포 %s" % (ha[:16], hb[:16]))
